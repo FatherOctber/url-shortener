@@ -1,0 +1,66 @@
+swagger: "2.0"
+info:
+  title: "URL-Shortener REST API"
+  version: "0.0.1"
+host: "demo.fatheroctober.com"
+basePath: "/shorturl/v1"
+
+schemes:
+- "https"
+
+paths:
+  /shorten:
+    post:
+      operationId: shortenUrl
+      description: Shorten a long URL
+      tags:
+        - shortener
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: longURL
+          description: Long URL
+          required: true
+          schema:
+            $ref: "#/definitions/URL"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/URL"
+        400:
+          description: "Requested operation could not be performed"
+
+  /{shortURL}:
+    get:
+      operationId: getOriginalLongUrl
+      description: return original long URL
+      tags:
+        - shortener
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "shortURL"
+        type: "string"
+        required: true
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/URL"
+        404:
+          description: "Not found"
+        400:
+          description: "Requested operation could not be performed"
+
+definitions:
+  URL:
+    type: "object"
+    properties:
+      value:
+        type: "string"
+        pattern: "^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$"

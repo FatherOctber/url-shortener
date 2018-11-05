@@ -1,6 +1,7 @@
 package com.fatheroctober.urlshortener.core.operation;
 
-import com.fatheroctober.urlshortener.core.UrlNotFoundException;
+import com.fatheroctober.urlshortener.core.exception.UrlBadFormatException;
+import com.fatheroctober.urlshortener.core.exception.UrlNotFoundException;
 import com.fatheroctober.urlshortener.dao.Dao;
 import com.fatheroctober.urlshortener.dao.model.IUrl;
 import com.fatheroctober.urlshortener.dao.model.IUrlFactory;
@@ -10,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
-
-import java.util.Optional;
 
 @Configuration
 public class ShortenerOperationRegistry {
@@ -50,19 +49,19 @@ public class ShortenerOperationRegistry {
     }
 
     private static String sanitizeURL(String url) {
-        if (StringUtils.isEmpty(url)) {
-            throw new RuntimeException("URL must be not empty");
+        if (!StringUtils.isEmpty(url) && UrlValidator.validateURL(url)) {
+            UrlValidator.validateURL(url);
+            if (url.substring(0, 7).equals("http://"))
+                url = url.substring(7);
+
+            if (url.substring(0, 8).equals("https://"))
+                url = url.substring(8);
+
+            if (url.charAt(url.length() - 1) == '/')
+                url = url.substring(0, url.length() - 1);
+            return url;
+        } else {
+            throw UrlBadFormatException.generateFor(url);
         }
-        if (url.substring(0, 7).equals("http://"))
-            url = url.substring(7);
-
-        if (url.substring(0, 8).equals("https://"))
-            url = url.substring(8);
-
-        if (url.charAt(url.length() - 1) == '/')
-            url = url.substring(0, url.length() - 1);
-        return url;
     }
-
-
 }

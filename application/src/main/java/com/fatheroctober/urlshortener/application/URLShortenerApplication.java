@@ -1,4 +1,4 @@
-package com.fatheroctober.urlshortener.api.application;
+package com.fatheroctober.urlshortener.application;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

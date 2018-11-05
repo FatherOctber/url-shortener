@@ -1,4 +1,4 @@
-package com.fatheroctober.urlshortener.core;
+package com.fatheroctober.urlshortener.core.exception;
 
 public class UrlNotFoundException extends RuntimeException {
 

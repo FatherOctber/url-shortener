@@ -1,6 +1,7 @@
 package com.fatheroctober.urlshortener.core
 
 import com.fatheroctober.urlshortener.core.config.ShortenerServiceTestConfig
+import com.fatheroctober.urlshortener.core.exception.UrlNotFoundException
 import com.fatheroctober.urlshortener.core.operation.ShortenerOperationRegistry
 import com.fatheroctober.urlshortener.dao.Dao
 import com.fatheroctober.urlshortener.dao.model.IUrl

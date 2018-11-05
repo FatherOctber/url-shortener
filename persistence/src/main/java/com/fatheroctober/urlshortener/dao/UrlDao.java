@@ -3,11 +3,14 @@ package com.fatheroctober.urlshortener.dao;
 import com.fatheroctober.urlshortener.dao.model.IUrl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.Optional;
 
@@ -18,13 +21,16 @@ public class UrlDao implements Dao<IUrl> {
     private static final String ID_KEY = "ID";
     private static final String URL_KEY = "URL:";
 
-
-    @Resource(name = "redisTemplate")
+    @Autowired
+    private RedisTemplate<String, IUrl> redisTemplate;
     private HashOperations<String, Long, IUrl> hashOps;
-
-    @Resource(name = "redisTemplate")
     private ValueOperations<String, IUrl> incrOps;
 
+    @PostConstruct
+    private void init() {
+        hashOps = redisTemplate.opsForHash();
+        incrOps = redisTemplate.opsForValue();
+    }
 
     @Override
     public Optional<IUrl> get(Long id) {

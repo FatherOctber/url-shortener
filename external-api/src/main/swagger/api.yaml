@@ -11,8 +11,8 @@ schemes:
 paths:
   /shorten:
     post:
-      operationId: shortenUrl
-      description: Shorten a long URL
+      operationId: shorten
+      description: shorten a long URL
       tags:
         - shortener
       consumes:
@@ -32,30 +32,28 @@ paths:
           schema:
             $ref: "#/definitions/URL"
         400:
-          description: "Requested operation could not be performed"
+          description: "Bad format of request parameters"
 
-  /{shortURL}:
+  /{shortID}:
     get:
-      operationId: getOriginalLongUrl
-      description: return original long URL
+      operationId: forward
+      description: forward to original long URL
       tags:
         - shortener
       produces:
       - "application/json"
       parameters:
       - in: "path"
-        name: "shortURL"
+        name: "shortID"
         type: "string"
         required: true
       responses:
-        200:
-          description: "OK"
+        302:
+          description: "Redirect to original URL"
           schema:
             $ref: "#/definitions/URL"
         404:
           description: "Not found"
-        400:
-          description: "Requested operation could not be performed"
 
 definitions:
   URL:

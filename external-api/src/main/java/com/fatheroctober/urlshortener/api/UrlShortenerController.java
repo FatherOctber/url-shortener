@@ -15,10 +15,10 @@ public class UrlShortenerController {
     @Autowired
     private IShortenedUrlService shortenedUrlService;
 
-    @GetMapping("/{shortUrl}")
+    @GetMapping("/{shortUrlID}")
     @ResponseBody
-    public RedirectView forward(@PathVariable String shortUrl) {
-        String originalLong = shortenedUrlService.originalLongUrl(shortUrl);
+    public RedirectView forward(@PathVariable String shortUrlID) {
+        String originalLong = shortenedUrlService.originalLongUrl(shortUrlID);
         RedirectView redirectView = new RedirectView();
         redirectView.setUrl("http://" + originalLong);
         return redirectView;
@@ -26,9 +26,9 @@ public class UrlShortenerController {
 
 
     @PostMapping("/shorten")
-    public ShortURL shorten(@Valid @RequestBody LongURL longURL, HttpServletRequest request) {
+    public URL shorten(@Valid @RequestBody URL longURL, HttpServletRequest request) {
         String localURL = request.getRequestURL().toString();
         String shortUrl = shortenedUrlService.shorten(localURL, longURL.getValue());
-        return new ShortURL().value(shortUrl);
+        return new URL().value(shortUrl);
     }
 }

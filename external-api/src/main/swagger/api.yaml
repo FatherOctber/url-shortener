@@ -50,8 +50,6 @@ paths:
       responses:
         302:
           description: "Redirect to original URL"
-          schema:
-            $ref: "#/definitions/URL"
         404:
           description: "Not found"
 

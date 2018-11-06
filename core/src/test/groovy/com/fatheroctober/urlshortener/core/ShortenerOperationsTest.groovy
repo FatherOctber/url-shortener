@@ -24,7 +24,7 @@ class ShortenerOperationsTest extends Specification {
 
     def "shorten url successfully"() {
         when:
-        def res = shortenerOperationRegistry.shortenUrlOperation().shorten("http://short.com/", "http://www.facebook.com")
+        def res = shortenerOperationRegistry.shortenUrlOperation().shorten("http://short.com/shorten", "http://www.facebook.com")
 
         then:
         1 * urlFactoryMock.create('www.facebook.com') >> { String val ->
@@ -39,7 +39,7 @@ class ShortenerOperationsTest extends Specification {
 
     def "get long url successfully"() {
         when:
-        def res = shortenerOperationRegistry.getOriginalLongUrlOperation().longUrl("http://short.com/b")
+        def res = shortenerOperationRegistry.getOriginalLongUrlOperation().longUrl("b")
 
         then:
         1 * daoMock.get(1) >> Optional.of(createdUrl('www.facebook.com'))
@@ -51,7 +51,7 @@ class ShortenerOperationsTest extends Specification {
 
     def "long url not found"() {
         when:
-        shortenerOperationRegistry.getOriginalLongUrlOperation().longUrl("http://short.com/b")
+        shortenerOperationRegistry.getOriginalLongUrlOperation().longUrl("b")
 
         then:
         1 * daoMock.get(1) >> Optional.empty()

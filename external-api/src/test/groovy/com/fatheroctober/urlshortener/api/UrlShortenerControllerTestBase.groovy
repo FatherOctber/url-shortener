@@ -10,7 +10,7 @@ import org.springframework.util.ResourceUtils
 import spock.lang.Specification
 
 @ContextConfiguration(classes = [UrlShortenerTestConfig.class])
-class UrlShortenerControllerTestBase extends Specification {
+abstract class UrlShortenerControllerTestBase extends Specification {
     @Autowired
     IShortenedUrlService shortenedUrlServiceMock
 

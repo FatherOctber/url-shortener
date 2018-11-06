@@ -16,6 +16,8 @@ import org.testcontainers.spock.Testcontainers
 import spock.lang.Shared
 import spock.lang.Specification
 
+import java.nio.charset.StandardCharsets
+
 @SpringBootTest(classes = URLShortenerApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(initializers = Initializer)
 @AutoConfigureMockMvc
@@ -44,8 +46,10 @@ abstract class AbstractIntegrationTest extends Specification {
         }
     }
 
-    def resource = { resourcePath
-        -> ResourceUtils.getFile(this.getClass().getResource(resourcePath)).text
+    def resource(String resourcePath, Map substitutions = [:]) {
+        def text = ResourceUtils.getFile(this.getClass().getResource(resourcePath)).text
+        substitutions.each { String k, String v -> text = text.replace('${' + k + '}', v) }
+        text
     }
 
 }

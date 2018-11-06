@@ -7,7 +7,11 @@
 
 ## Technologies:
 :point_right: Spring-Boot
+
 :point_right: Spock Testing
+
 :point_right: Redis
+
 :point_right: Testcontainers
+
 :point_right: Docker integration

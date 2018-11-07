@@ -1,0 +1,13 @@
+version: '2'
+services:
+  app:
+    image: "fatheroctober/test-projects:url-shortener_app"
+    ports:
+     - "8080:8080"
+    links:
+      - "db:redis"
+  db:
+    image: "redis:alpine"
+    hostname: redis
+    ports:
+     - "6379:6379"

@@ -1,6 +1,8 @@
 package com.fatheroctober.urlshortener.api
 
 import com.fatheroctober.urlshortener.api.config.UrlShortenerTestConfig
+import com.fatheroctober.urlshortener.core.exception.UrlBadFormatException
+import com.fatheroctober.urlshortener.core.exception.UrlNotFoundException
 import org.springframework.http.MediaType
 import org.springframework.test.context.ContextConfiguration
 
@@ -45,5 +47,38 @@ class UrlShortenerControllerTest extends UrlShortenerControllerTestBase {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().json(resource("shortenLongURL.rs.json")))
     }
+
+
+    def "controller returns url-not-found error"() {
+        given:
+        def shortUrl = '12'
+
+        when:
+        def result = mockMvc.perform(get('/shorturl/v1/' + shortUrl))
+
+        then:
+        1 * shortenedUrlServiceMock.originalLongUrl(_ as String) >> {
+            throw UrlNotFoundException.generateFor(shortUrl)
+        }
+
+        expect:
+        result.andExpect(status().isNotFound())
+    }
+
+    def "controller returns bad-format-request error"() {
+        when:
+        def result = mockMvc.perform(post('/shorturl/v1/shorten')
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(resource("badFormatUrl.rq.json")))
+
+        then:
+        1 * shortenedUrlServiceMock.shorten(*_) >> { arguments ->
+            throw UrlBadFormatException.generateFor("bad-url")
+        }
+
+        expect:
+        result.andExpect(status().isBadRequest())
+    }
+
 
 }

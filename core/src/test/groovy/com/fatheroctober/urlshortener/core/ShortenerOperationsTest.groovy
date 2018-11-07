@@ -1,6 +1,7 @@
 package com.fatheroctober.urlshortener.core
 
 import com.fatheroctober.urlshortener.core.config.ShortenerServiceTestConfig
+import com.fatheroctober.urlshortener.core.exception.UrlBadFormatException
 import com.fatheroctober.urlshortener.core.exception.UrlNotFoundException
 import com.fatheroctober.urlshortener.core.operation.ShortenerOperationRegistry
 import com.fatheroctober.urlshortener.dao.Dao
@@ -56,6 +57,14 @@ class ShortenerOperationsTest extends Specification {
         then:
         1 * daoMock.get(1) >> Optional.empty()
         thrown(UrlNotFoundException)
+    }
+
+    def "bad format of url for shortening"() {
+        when:
+        shortenerOperationRegistry.shortenUrlOperation().shorten("http://short.com/shorten", "very-bad-url")
+
+        then:
+        thrown(UrlBadFormatException)
     }
 
     def createdUrl = { value -> new TestUrl(value) }

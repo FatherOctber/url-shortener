@@ -21,8 +21,8 @@ Use command "docker-compose build" to build docker images and "docker-compose up
 To get information about API see external-api/src/main/swagger/api.yaml.
 For standalone running set your Redis connection properties in redisdb.properties.
 
-## Troubleshooting:
-Restart your docker if you face with I/O error during integration test (with testcontainers) running.
-
 ## Docker:
 Url-shortener image is available in docker hub (https://hub.docker.com/r/fatheroctober/test-projects/) with tag url-shortener_app. Use it with linkage to Redis image - see docker/docker-compose.
+
+## Troubleshooting:
+Restart your docker if you face with I/O error during integration test (with testcontainers) running.

@@ -23,3 +23,6 @@ For standalone running set your Redis connection properties in redisdb.propertie
 
 ## Troubleshooting:
 Restart your docker if you face with I/O error during integration test (with testcontainers) running.
+
+## Docker:
+Url-shortener image is available in docker hub (https://hub.docker.com/r/fatheroctober/test-projects/) with tag url-shortener_app. Use it with linkage to Redis image - see docker/docker-compose.
